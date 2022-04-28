@@ -1,0 +1,8 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary")
+
+go_binary(
+    name = "go_web",
+    srcs = ["main.go"],
+    deps = ["//projects/hello_bazel/go_hello_world:gohelloworld",
+    "@com_github_gorilla_mux//:mux"],
+)

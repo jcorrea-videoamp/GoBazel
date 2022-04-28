@@ -1,0 +1,30 @@
+# For each library, add a go_library rule like the one below. 
+# Source files are listed in the srcs attribute. Imported packages 
+# outside the standard library are listed in the deps attribute using Bazel 
+# labels that refer to corresponding go_library rules. The library's 
+# import path must be specified with the importpath attribute.
+# (https://github.com/bazelbuild/rules_go#writing-build-files-by-hand)
+
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "gohelloworld",
+    srcs = [
+        "hello_world.go",
+    ],
+    importpath = "github.com/jcorrea-videoamp/GoBazel/projects/hello_bazel/go_hello_world",
+    visibility = ["//visibility:public"],
+)
+
+# For tests, add a go_test rule like the one below. The library being 
+# tested should be listed in an embed attribute.
+
+go_test(
+    name = "hello_world_test",
+    srcs = [
+        "hello_world_test.go",
+    ],
+    embed = [":gohelloworld"],
+    deps = ["@com_github_smartystreets_goconvey//convey"]
+)
+
