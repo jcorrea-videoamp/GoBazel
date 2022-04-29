@@ -5,18 +5,19 @@ First steps with Bazel for building projects in Go
 
 <ol>
   <li> Create a new project </li>
-  <li> Add a ``BUILD.bazel`` file to the project </li>
-  <li> Add a ``WORKSPACE.bazel`` file to the project </li>
-  <li> Modify the ``WORKSPACE.bazel`` file to assign a name to the workspace </li>
-  .. code:: bzl
+  <li> Add a `BUILD.bazel` file to the project </li>
+  <li> Add a `WORKSPACE.bazel` file to the project </li>
+  <li> Modify the `WORKSPACE.bazel` file to assign a name to the workspace </li>
   
+  .. code:: bzl
     workspace(
         # How this workspace would be referenced with absolute labels from another workspace
         name = "gobazel",
     )
-  <li> Modify the ``WORKSPACE.bazel`` file to include ``io_bazel_rules_go`` and ``bazell_gazelle`` building rules. Reference: https://github.com/bazelbuild/rules_go#generating-build-files</li>
+  
+  <li> Modify the `WORKSPACE.bazel` file to include `io_bazel_rules_go` and `bazell_gazelle` building rules. Reference: https://github.com/bazelbuild/rules_go#generating-build-files</li>
+  
   .. code:: bzl
-
     load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
     http_archive(
@@ -45,11 +46,12 @@ First steps with Bazel for building projects in Go
     go_register_toolchains(version = "1.18")
 
     gazelle_dependencies()
+  
   <li> Add a library to your project: Create a new folder that will contain the source and test files for your library. 
     For this example project I created the folder ``go_hello_world`` under the projects folder.</li>
-  <li> Add a ``BUILD.bazel`` file to your library's folder. Modify the file to include the rules for building go library and test in bazel. </li>
-  .. code:: bzl
+  <li> Add a `BUILD.bazel` file to your library's folder. Modify the file to include the rules for building go library and test in bazel. </li>
   
+  .. code:: bzl
     load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
   
     go_library(
@@ -79,22 +81,20 @@ First steps with Bazel for building projects in Go
         ],
     )
   
-  For this example project I used [goconvey](github.com/smartystreets/goconvey) for test assertions so I had to modify not only the ``BUILD.bazel`` 
-  file in the library but also the ``WORKSPACE.bazel`` file in the root folder to make the project work with repositoires.
+  For this example project I used [goconvey](https://github.com/smartystreets/goconvey) for test assertions so I had to modify not only the `BUILD.bazel` file in the library but also the `WORKSPACE.bazel` file in the root folder to make the project work with repositoires.
   
-  To create the go_repostory entry in the ``WORKSPACE.bazel`` file you need to create the name accordingly, ``com_github_owner_repo``, the importpath
+  To create the go_repostory entry in the `WORKSPACE.bazel` file you need to create the name accordingly, `com_github_owner_repo`, the importpath
   is the repo url and the tag can be grabbed from the repo.
   
-  To add the dependency to the deps in the go_test entry in the ``BUILD.bazel`` file of the library you need to fetch the name using this command
-  ``bazel query @com_github_owner_repo//...``. For goconvey: ``bazel query @com_github_smartystreets_goconvey//...``
+  To add the dependency to the deps in the go_test entry in the `BUILD.bazel` file of the library you need to fetch the name using this command
+  `bazel query @com_github_owner_repo//...`. For goconvey: `bazel query @com_github_smartystreets_goconvey//...`
   
   <li> Add an entry point to your project: Create a folder that will contain the source file with the main functioin of your project (and tests?).
-    For this example I created the folder ``go_web`` with a single main file. </li>
+    For this example I created the folder `go_web` with a single main file. </li>
   
-  <li> Add a ``BUILD.bazel`` file to your folder and modify it to include the rules to build a go binay. </li>
+  <li> Add a `BUILD.bazel` file to your folder and modify it to include the rules to build a go binay. </li>
   
   .. code:: bzl
-  
     load("@io_bazel_rules_go//go:def.bzl", "go_binary")
   
     go_binary(
@@ -102,7 +102,7 @@ First steps with Bazel for building projects in Go
         srcs = ["main.go"],
     )
   
-  In this example project I used [gorilla/mux](https://github.com/gorilla/mux) as a dependency, so I had to add the repository in the ``WORKSPACE.bazel`` file and modify the ``go_binary`` entry in the ``BUILD.bazel`` file to include an additional external dependency.
+  In this example project I used [gorilla/mux](https://github.com/gorilla/mux) as a dependency, so I had to add the repository in the `WORKSPACE.bazel` file and modify the `go_binary` entry in the `BUILD.bazel` file to include an additional external dependency.
   
   </ol>
   
